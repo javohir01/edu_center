@@ -21,7 +21,7 @@ class CreateStudentsTable extends Migration
             $table->integer('born');
             $table->string('email');
             $table->string('place');
-            $table->string('INN');
+            $table->string('TIN');
             $table->timestamps();
         });
     }
