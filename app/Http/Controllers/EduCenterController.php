@@ -31,7 +31,10 @@ class EduCenterController extends Controller
         $this->validate($request,[
             'name' => 'required',
             'email' => 'required',
-            'address' => 'required'
+            'address' => 'required',
+            'tell_number' => 'required',
+            'center_site' => 'required',
+            'center_about' => 'required'
         ]);
 
         $EduCenter = $request->all();

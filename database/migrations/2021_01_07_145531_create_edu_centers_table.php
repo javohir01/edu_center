@@ -18,6 +18,9 @@ class CreateEduCentersTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('address');
+            $table->integer('tell_number');
+            $table->string('center_site')->nullable();
+            $table->string('center_about');
             $table->timestamps();
         });
     }

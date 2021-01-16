@@ -18,10 +18,11 @@ class CreateStudentsTable extends Migration
             $table->integer('center_id');
             $table->string('firs_name');
             $table->string('last_name');
-            $table->integer('born');
-            $table->string('email');
-            $table->string('place');
+            $table->integer('data_birth');
             $table->string('TIN');
+            $table->string('email');
+            $table->string('address');
+            $table->integer('tell_number');
             $table->timestamps();
         });
     }

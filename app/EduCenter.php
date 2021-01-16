@@ -13,6 +13,6 @@ class EduCenter extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'name', 'email', 'address'
+        'name', 'email', 'address' , 'tell_number' , 'center_site', 'center_about'
     ];
 }
