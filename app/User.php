@@ -9,11 +9,18 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    protected $table =  "users";
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
+
+    public $primaryKey = 'id';
+
+    public $timestamps = true;
+     
     protected $fillable = [
         'name', 'email', 'password',
     ];
@@ -26,4 +33,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    
+    public function EduCenter(){
+        return $this->hasMany('App\EduCenter');
+    }
 }

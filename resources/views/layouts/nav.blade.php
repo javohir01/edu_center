@@ -5,10 +5,13 @@
       <a class="nav-link" href="#">yangiliklar</a>
       <a class="nav-link" href="#">o`quv markazlari</a>
       <a class="nav-link" href="#">sayt haqida</a>
-      <a class="nav-link" href="/login">Kirish</a>
-      @if (Auth::check())
+      @guest
+        <a class="nav-link" href="/login">Kirish</a>
+      @endguest
+      @auth
         <a class="nav-link ml-auto" href="#">{{ Auth::user()->name }}</a>
-      @endif
+        <a class="nav-link" href="/logout"> Log out</a>
+      @endauth
     </nav>
   </div>
 </div>

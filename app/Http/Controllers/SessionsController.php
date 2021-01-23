@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 
 class SessionsController extends Controller
 {
+    public function __construct()
+    {
+        $this ->middleware('guest', ['except' => 'destroy']);
+    }
+
+
     public function create()
     {
         return view('sessions.create');
@@ -14,15 +20,19 @@ class SessionsController extends Controller
 
     public function store()
     {
-        // dd(request(['login', 'password']));
         if (! auth()->attempt(request(['login', 'password']))) {
-            // return back()->withErrors([
-            //     'massage' =>'Plaase check your credentisls and try again.'
-            // ]);
             return back()->withErrors(['msg', 'The Message']);
         }
 
-        return redirect()->home();
+        $user = auth()->user();
+
+       
+        switch($user->role_id) 
+        {
+            case 1: return redirect('/adminpanel'); break; 
+            case 2: return redirect('/educenter'); break; 
+            case 3: return view('student'); break; 
+        }
     }
     
     

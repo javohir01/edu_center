@@ -10,10 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/adminpanel','EduCenterController@index')->name('home');
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','HomeController@index')->name('home');
+Route::get('/adminpanel','EduCenterController@adminpanel');
+Route::get('/educenter','EduCenterController@index');
+
 
 Route::get('/login','SessionsController@create');
 Route::post('/login','SessionsController@store'); // mana post metodli login
