@@ -22,4 +22,11 @@ Route::get('/logout','SessionsController@destroy');
 Route::get('/createcenter','EduCenterController@CreateCenter');
 Route::post('/createcenter','EduCenterController@store');
 
+
+Route::get('/createstudent','StudentController@index');
+Route::post('/createstudent','StudentController@store');
+
+Route::get('/student','StudentController@showindex');
+
+
 Route::get('/adminpanel/{id}','EduCenterController@show');

@@ -1,10 +1,8 @@
-@extends ('welcome')
+@extends('welcome')
 
 @section ('content')
 <div>
-<div class="mb-3">
-  <a href="/createstudent" class="btn btn-primary btn-lg active float-right" role="button" aria-pressed="true">O`quvchi qo`shish</a>
-</div>
+
 
 <table class="table table-striped">
   <thead>

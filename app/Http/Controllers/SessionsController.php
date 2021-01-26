@@ -31,7 +31,7 @@ class SessionsController extends Controller
         {
             case 1: return redirect('/adminpanel'); break; 
             case 2: return redirect('/educenter'); break; 
-            case 3: return view('student'); break; 
+            case 3: return redirect('/student'); break; 
         }
     }
     
