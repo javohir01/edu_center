@@ -8,27 +8,16 @@ use App\User;
 use App\Student;
 use DB;
 use Illuminate\Support\Facades\Hash;
+use App\Regions ;
 
 class EduCenterController extends Controller
 {
 
     public function index()
     {
-         // qara buyerda nomlashda xato qilgansan
-        // $user ni edu_center_id degansan
-        // user bu user, edu_center_id uni bitta ustuni (field i)
-        // $user dedingmi $user ni ol, qaysidir ustunini emas
-        $user = auth()->user();  // boldi shu senga hozir avtorizatsiyada turgan user ni beradi
-
-        // $center_id = Student::students(center_id);
-        // print_r($center_id); die;
-        $students = Student::where('center_id', $user->edu_center_id)->get(); // endi manabuyerda whereni ishatamiz, ozgaruvchialr kichik harfda
-        // man ham shunay qilib olib ko`rdim, faqat get berish kerak ekanligini bilganim yoqda
-        // ha yaxshi unda, kn yana bitta joyi nimagadir ishlamayabdi
-        // where ni ichiga 2 ta narsa yoziladi (,) bilan
-        // birinchisi ustun nomi 2 chisi osha ustun nechiga teng bolishi kerakligi
-        // students table da center_id si userni edu_center_id siga teng bo'lganlarini beradi endi senga
-        // where qilgandan keyin oxirida get() qilib olinadi
+        
+        $user = auth()->user();  
+        $students = Student::where('center_id', $user->edu_center_id)->get();
         return view('roles.eduCenter')->with('students', $students );
     }
 
@@ -40,7 +29,27 @@ class EduCenterController extends Controller
 
     public function CreateCenter()
     {
-        return view('centers.CreateCenter');
+        $region_list=DB::table('regions')
+                    ->get();
+        return view('centers.CreateCenter')->with('region_list',$region_list);
+    }
+
+    public function fetch(Request $request)
+    {
+        $select = $request->get('select');
+        $value = $request->get('value');
+        $dependent = $request->get('dependent');
+        $data =DB::table('cities')
+                ->where('region_id', $value)
+                ->get();
+                // dd($data);
+        $output = '<option value="">Select '.ucfirst($dependent).'</option>';
+        foreach($data as $row)
+        {
+            $output .=( '<option value="'.$row->id.'">'. $row->name_uz .'</option>');
+        }
+        echo $output;
+
     }
 
     public function show($id)
@@ -51,9 +60,11 @@ class EduCenterController extends Controller
 
     public function store(Request $request)
     {
-        
+        $value = $request->get('value');
+        dd($value);
         $this->validate($request,[
             'name' => 'required',
+            'head_name' =>'required',
             'email' => 'required',
             'address' => 'required',
             'tell_number' => 'required',
@@ -65,13 +76,18 @@ class EduCenterController extends Controller
         ]);
        
         $eduCenter = EduCenter::create([ 
-            'name' => $request->name,  
+            'region_id'=> 1,
+            'city_id'=>1,
+            'name' => $request->name, 
+            'head_name'=>$request->head_name, 
             'email' => $request->email,  
             'address' => $request->address, 
             'tell_number' => $request->tell_number,
             'center_site' => $request->center_site,
             'center_about' => $request->center_about
         ]);
+
+    
        
         $user = DB::table('users')->insert([
             'role_id' => 2,
@@ -79,12 +95,52 @@ class EduCenterController extends Controller
             'name' => $request->user_name,
             'login' => $request->login,
             'password' => bcrypt($request->password) // nimaga buyerga newPassword deb yozgansan
-            // internetdan olib yozgandim, shu bcrypt qilmoqchi bo`lib
-            // togrla
+            
         ]);
         
         return redirect('/adminpanel');
-       // ishladiku bu ishladi, qolganlari ishlamayabdida
-
+       
     }
+
+    public function edit($id)
+    {
+        $EduCenter = EduCenter::find($id);
+        return view('centers.edit')->with('EduCenter', $EduCenter);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request,[
+            'name' => 'required',
+            'email' => 'required',
+            'address' => 'required',
+            'tell_number' => 'required',
+            'center_site' => 'required',
+            'center_about' => 'required'
+        ]);
+
+        $data =$request->all();
+        $EduCenter=EduCenter::find($id);
+        $EduCenter -> update($data);
+       
+        // $eduCenter = EduCenter::update([ 
+        //     'name' => $request->name,  
+        //     'email' => $request->email,  
+        //     'address' => $request->address, 
+        //     'tell_number' => $request->tell_number,
+        //     'center_site' => $request->center_site,
+        //     'center_about' => $request->center_about
+        // ]);
+        
+        return redirect('/adminpanel')->with('success','center updated');
+    }
+    
+    public function destroy($id)
+    {
+        $EduCenter=EduCenter::find($id);
+        $EduCenter -> delete();
+
+        return redirect('/adminpanel')->with('success','center deleted');
+    }
+
 }
