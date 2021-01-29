@@ -19,7 +19,7 @@ Route::get('/login','SessionsController@create');
 Route::post('/login','SessionsController@store'); // mana post metodli login
 Route::get('/logout','SessionsController@destroy');
 
-Route::get('/createcenter','EduCenterController@CreateCenter');
+Route::get('/createcenter','EduCenterController@createCenter');
 Route::post('/createcenter','EduCenterController@store');
 
 Route::resource('EduCenter','EduCenterController'); // qara buyerda resource qilingani uchun hamma routelarni yozish shart emas
@@ -40,3 +40,5 @@ Route::delete('Student','StudentController@update')->name('Student.update'); // 
 Route::get('Student/{id}/edit','StudentController@edit');
 
 Route::post('dynamic_dependent/fetch', 'EduCenterController@fetch')->name('dynamicdependent.fetch');
+
+Route::post('dynamic_dependent/fetch', 'StudentController@fetch')->name('dynamicdependent.fetch');

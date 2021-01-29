@@ -21,17 +21,17 @@ class EduCenterController extends Controller
         return view('roles.eduCenter')->with('students', $students );
     }
 
-    public function adminpanel()
+    public function adminpanel() 
     {
         $EduCenters = EduCenter::all();
-        return view('roles.AdminPanel')->with('EduCenters', $EduCenters );
+        return view('roles.adminPanel')->with('EduCenters', $EduCenters );
     }
 
-    public function CreateCenter()
+    public function createCenter()
     {
         $region_list=DB::table('regions')
                     ->get();
-        return view('centers.CreateCenter')->with('region_list',$region_list);
+        return view('centers.createCenter')->with('region_list',$region_list);
     }
 
     public function fetch(Request $request)
@@ -55,13 +55,11 @@ class EduCenterController extends Controller
     public function show($id)
     {
         $EduCenters = EduCenter::find($id);
-        return view('centers.ShowCenter')->with('EduCenters', $EduCenters );
+        return view('centers.showCenter')->with('EduCenters', $EduCenters );
     }
 
     public function store(Request $request)
     {
-        $value = $request->get('value');
-        dd($value);
         $this->validate($request,[
             'name' => 'required',
             'head_name' =>'required',
@@ -76,8 +74,8 @@ class EduCenterController extends Controller
         ]);
        
         $eduCenter = EduCenter::create([ 
-            'region_id'=> 1,
-            'city_id'=>1,
+            'region_id'=>$request->region_id,
+            'city_id'=>$request->city_id,
             'name' => $request->name, 
             'head_name'=>$request->head_name, 
             'email' => $request->email,  
@@ -123,15 +121,6 @@ class EduCenterController extends Controller
         $EduCenter=EduCenter::find($id);
         $EduCenter -> update($data);
        
-        // $eduCenter = EduCenter::update([ 
-        //     'name' => $request->name,  
-        //     'email' => $request->email,  
-        //     'address' => $request->address, 
-        //     'tell_number' => $request->tell_number,
-        //     'center_site' => $request->center_site,
-        //     'center_about' => $request->center_about
-        // ]);
-        
         return redirect('/adminpanel')->with('success','center updated');
     }
     

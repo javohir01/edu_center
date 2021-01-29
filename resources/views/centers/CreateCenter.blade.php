@@ -53,29 +53,29 @@
     <br>
 
     <div class='row'>  
-    <div class="container box">
-      <h3 align="center">Ajax Dynamic Dependent</h3> <br />
-      <div class="form-group">
-        <select name="region" id="region" class="form-control input-lg" data-dependent="city">
-          <option value=""> Select region</option>
-          @foreach($region_list as $name_uz)
-          <option value="{{$name_uz->id}}">{{$name_uz->name_uz}}</option>
-          @endforeach
-        </select>
-      </div>
-    <br />
-    <div class="form-group">
-      <select name="city" id="city" class="form-control input-lg dynamic" >
+      <div class="container box">
+        <h3 align="center">Ajax Dynamic Dependent</h3> <br />
+        <div class="form-group">
+          <select name="region_id" id="region_id" class="form-control input-lg" data-dependent="city">
+            <option value=""> Select region</option>
+            @foreach($region_list as $name_uz)
+            <option value="{{$name_uz->id}}">{{$name_uz->name_uz}}</option>
+            @endforeach
+          </select>
+        </div>
+        <br />
+        <div class="form-group">
+          <select name="city_id" id="city_id" class="form-control input-lg dynamic" >
 
-        <option value=""> Select City</option>
-      </select>
-    </div>
-    
-    <br />
-  </div>
+            <option value=""> Select City</option>
+          </select>
+        </div>
       
+        <br />
+      </div>
+        
     </div>
-  <br>
+      <br>
     <div class="row">
        
       <div class="form-group col">

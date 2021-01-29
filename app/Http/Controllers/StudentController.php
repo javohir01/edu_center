@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Student;
 use App\EduCenter;
 use App\User;
+use App\Regions;
+use App\Cities;
 use DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,8 +16,27 @@ class StudentController extends Controller
 {
     public function index()
     {
-        return view('students.CreateStudent'); 
-    } // showda 1 ta obyket keladi, uni jadval qilish nima keragi bor, joy keng chiroyli qilib yoyib chiqaz 
+        $region_list=DB::table('regions')
+                    ->get();
+        return view('students.createStudent')->with('region_list',$region_list);; 
+    }  
+
+    public function fetch(Request $request)
+    {
+        $select = $request->get('select');
+        $value = $request->get('value');
+        $dependent = $request->get('dependent');
+        $data =DB::table('cities')
+                ->where('region_id', $value)
+                ->get();
+                // dd($data);
+        $output = '<option value="">Select '.ucfirst($dependent).'</option>';
+        foreach($data as $row)
+        {
+            $output .=( '<option value="'.$row->id.'">'. $row->name_uz .'</option>');
+        }
+        echo $output;
+    }
 
     public function showindex()
     {
@@ -41,9 +62,12 @@ class StudentController extends Controller
         ]);
         // validatsiyadan otmagani uchun orqaga qaytarib yuborgan, 
         // san error larni chiqarishni qilmaganing uchun error message ni korsatmayapti
-        $userr = auth()->user();
+        $user = auth()->user(); // nega 2 ta r
+        // nega requestda region deb nomlagansan, senga region kelmaydiku, region_id keladi hozi tog`irlab qo`yaman
         $student = Student::create([ 
-            'center_id' => $userr->edu_center_id, 
+            'region_id'=>$request->region_id,
+            'city_id'=>$request->city_id,
+            'center_id' => $user->edu_center_id, 
             'first_name' => $request->first_name,  
             'last_name' => $request->last_name,  
             'date_birth' => $request->date_birth, 
@@ -53,10 +77,10 @@ class StudentController extends Controller
             'tell_number' => $request->tell_number
 
         ]);
-        $userr = auth()->user();
-        $user = User::create([ 
-            'edu_center_id' => $userr->edu_center_id,
-            'role_id' => 3,
+        $user = auth()->user();
+        User::create([ // bu aslida kerak emas, bizga yaratsa boldi uni olib qayerdadir ishlatmagankusan
+            'edu_center_id' => $user->edu_center_id, // bu user da edu_center_id bo'lmaydi, null tushuntirgandimu
+            'role_id' => 3,  // nimaga edu_center_id bo`lmaydi, student qaysi centerdan ekanligini bilish uchun kerakku
             'student_id' => $student->id, 
             'name' => $request->name,
             'login' => $request->login,
@@ -70,7 +94,19 @@ class StudentController extends Controller
     public function show($id)
     {
         $student = Student::find($id);
-        return view('students.showStudent')->with('student', $student );
+        // $region_id = $student->region_id; // mananbuyerda alohida ozgaruvchiga olish shartmas
+        $region = Regions::where('id', $student->region_id)->first(); 
+        $city = Cities::where('id' , $student->city_id)->first();
+        // tuhsundingmi, ha tushundim
+        // qara buishni laravleozonlashtirib qo'ygan
+        // sen hozir ergionnjni ruchnoy bazadan ozing olding
+        $student->region;
+        $student->city;
+        // dd($student->toArray()); 
+        // relation shu uchun kerak
+        // model nomida kiopliok qoshimchasi bo'lmaydi deb aytganman
+        // student degan modelga regionni relationini bglab qoyasan
+        return view('students.showStudent', ['student' => $student, 'region' => $region ]);
     }
 
     public function edit($id)

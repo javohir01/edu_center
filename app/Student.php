@@ -14,7 +14,15 @@ class Student extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'first_name', 'last_name', 'date_birth' , 'TIN' , 'email', 'address', 'tell_number', 'center_id'
+        'first_name', 'last_name', 'date_birth' , 'TIN' , 'email', 'address', 'tell_number', 'center_id',
+        'region_id', 'city_id'
     ];
 
+    public function region() {
+       return $this->belongsTo('App\Regions'); // keyin togrlab qoyasan
+    }
+
+    public function city() {
+        return $this->belongsTo('App\Cities'); // keyin togrlab qoyasan
+     }
 }
