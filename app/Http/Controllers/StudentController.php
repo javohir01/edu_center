@@ -18,7 +18,9 @@ class StudentController extends Controller
     {
         $region_list=DB::table('regions')
                     ->get();
-        return view('students.createStudent')->with('region_list',$region_list);; 
+        $science_list=DB::table('sciences')
+                    ->get();
+        return view('students.createStudent', ['region_list' => $region_list, 'science_list' => $science_list ]); 
     }  
 
     public function fetch(Request $request)
@@ -65,6 +67,7 @@ class StudentController extends Controller
         $user = auth()->user(); // nega 2 ta r
         // nega requestda region deb nomlagansan, senga region kelmaydiku, region_id keladi hozi tog`irlab qo`yaman
         $student = Student::create([ 
+            'science_id'=>$request->science_id,
             'region_id'=>$request->region_id,
             'city_id'=>$request->city_id,
             'center_id' => $user->edu_center_id, 

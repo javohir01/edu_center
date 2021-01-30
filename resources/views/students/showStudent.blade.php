@@ -17,26 +17,6 @@
   <div class="mb-3">
     <a href="/educenter" class="btn btn-primary  active float-left" role="button" aria-pressed="true">Go back</a>
   </div>
-<!-- <br>
-<br>
-<h2>About {{$student->first_name}} </h2>
-
-<h3>Shaxsiy malumotlar</h3>
-<p>First name: </p>
-<p>Last name: </p>
-<p>Date birth: {{$student->date_birth}}</p>
-<p> TIN :</p>
-<br> 
-<br>
-<h3>Aloqa malumotlari</h3>
-<p>Tell number: </p>
-<p> Email :</p>
-<br>
-<br>
-<h3>Hudud malumotlari</h3>
-<p>Region id: </p>
-<p>City id:  </p>
-<p>Address: </p> -->
  
 <style>
  body 
@@ -237,7 +217,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <p class="m-b-10 f-w-600">Address: :</p>
+                                        <p class="m-b-10 f-w-600">Address:</p>
                                         <h6 class="text-muted f-w-400">{{$student->address}}</h6>
                                     </div>
                                 </div>

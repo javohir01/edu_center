@@ -36,6 +36,19 @@
           <input type="text" name="TIN"  minlength="9" maxlength="9" class="form-control" id="TIN" placeholder="TIN" required>
         </div>
       </div>
+
+      <div class="form-group">
+        <div class="form-group col">
+          <label for="science_id">Select science</label>
+          <select name="science_id" id="science_id" class="form-control input-lg" >
+            <option value=""> Select science</option>
+            @foreach($science_list as $science)
+              <option value="{{$science->id}}">{{$science->name}}</option>
+            @endforeach
+          </select>
+        </div>
+      </div>
+
     </div>
 
     <h3>Aloqa malumotlari</h3>
